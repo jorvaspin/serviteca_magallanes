@@ -14,33 +14,21 @@ import axios from 'axios'
 const Orders = () => {
 
     const url = import.meta.env.VITE_API_BASE_URL
-    const [ordenTrabajo, setOrdenTrabajo] = useState([])
-    const [uuid, setUuid] = useState('')
-    const [patente, setPatente] = useState('')
-    const [marca, setMarca] = useState('')
-    const [modelo, setModelo] = useState('')
-    const [kilometraje, setKilometraje] = useState('')
-    const [nombreCliente, setNombreCliente] = useState('')
-    const [mecanico, setMecanico] = useState('')
-    const [formaPago, setFormaPago] = useState('')
-    const [totalAPagar, setTotalAPagar] = useState('')
-    const [trabajosRealizados, setTrabajosRealizados] = useState([])
-    const [operation, setOperation] = useState('')
-    const [title, setTitle] = useState('')
+    const [workOrders, setWorkOrders] = useState([])
 
     useEffect(() => {
-        getOrdenTrabajo()
+        getWorksToday()
     }, [])
 
-    const getOrdenTrabajo = async () => {
-        const response = await axios.get(url + 'api/getOrdenTrabajosHoy', {
+    const getWorksToday = async () => {
+        const response = await axios.get(url + 'api/getWorksToday', {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer '+localStorage.getItem('token')
             }
         })
-        setOrdenTrabajo(response.data)
+        setWorkOrders(response.data)
     }
 
     const HtmlTooltip = styled(({ className, ...props }) => (
@@ -59,14 +47,14 @@ const Orders = () => {
         <div className={`${css.container} theme-container`}>
             <div className={css.head}>
                 <img src="./logo.png" alt="logo" />
-                <span>OT de Hoy {ordenTrabajo.length}</span>
+                <span>OT de Hoy {workOrders.length}</span>
             </div>
 
             <div className={`grey-container ${css.stat}`}>
                 <span>Total</span>
                 {
-                    ordenTrabajo.length > 0 ? 
-                    <span>$ {groupNumber((ordenTrabajo.reduce((a,v) =>  a = a + v.total_a_pagar , 0 )))}</span>
+                    workOrders.length > 0 ? 
+                    <span>$ {groupNumber((workOrders.reduce((a,v) =>  a = a + v.total_a_pagar , 0 )))}</span>
                     :
                     <span>$ {groupNumber(0)}</span>
                 }
@@ -75,8 +63,8 @@ const Orders = () => {
 
             <div className={css.orders}>
                 {
-                    ordenTrabajo.length > 0 ?
-                    ordenTrabajo.map((order, index) => (
+                    workOrders.length > 0 ?
+                    workOrders.map((order, index) => (
                         <div key={index} className={css.order}>
                             <div className='m-0'>
                                 <span>#Orden de trabajo {order.uuid}</span>
@@ -97,8 +85,8 @@ const Orders = () => {
                                             
                                             order.trabajos_realizados.map((trabajo, index) => (
                                                 <ul key={index}>
-                                                    <li className='text-black'>{trabajo['nombre_trabajo']}</li>
-                                                    <li className='text-black'>Valor: ${groupNumber(trabajo['precio'])} </li>
+                                                    <li className='text-black'>{trabajo['trabajo']}</li>
+                                                    <li className='text-black'>Valor: ${groupNumber(trabajo['costo'])} </li>
                                                     <hr />
                                                 </ul>
                                             ))
@@ -123,12 +111,6 @@ const Orders = () => {
                         </div>
                 }
             </div>
-
-
-            {/* <div className={css.orderChart}>
-                <span>Split by orders</span>
-                <OrdersPieChart/>
-            </div> */}
         </div>
     )
 }

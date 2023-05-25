@@ -14,24 +14,24 @@ import axios from 'axios';
 const DataGrid = () => {    
 
     const url = import.meta.env.VITE_API_BASE_URL
-    const [ordenTrabajo, setOrdenTrabajo] = useState([])
+    const [workOrders, setWorkOrders] = useState([])
 
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
-        getOrdenTrabajo()
+        getWorkOrders()
     }, [])
 
-    const getOrdenTrabajo = async () => {
-        const response = await axios.get(url + 'api/getOrdenTrabajos', {
+    const getWorkOrders = async () => {
+        const response = await axios.get(url + 'api/getWorkOrders', {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer '+localStorage.getItem('token')  
             }
         })
-        setOrdenTrabajo(response.data)
+        setWorkOrders(response.data)
     }
     const columns = useMemo(() => [
         {
@@ -93,12 +93,7 @@ const DataGrid = () => {
 
     const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
         if (!Object.keys(validationErrors).length) {
-        //   tableData[row.index] = values;
-        //   console.log(values)
-        //   console.log(row)
 
-        //   setTableData([...tableData]);
-        //   exitEditingMode(); 
         }
      };
 
@@ -108,14 +103,8 @@ const DataGrid = () => {
     
       const handleDeleteRow = useCallback(
         (row) => {
-        //   if (
-        //   ) {
-        //     return;
-        //   }
-        //   tableData.splice(row.index, 1);
-        //   setTableData([...tableData]);
+
         },
-        // [tableData],
       );
     
 
@@ -125,7 +114,7 @@ const DataGrid = () => {
             <ThemeProvider theme={theme}>
                 <MaterialReactTable 
                     columns={columns} 
-                    data={ordenTrabajo}
+                    data={workOrders}
                     enableRowActions
                     editingMode="modal" //default
                     initialState={{ columnVisibility: { id: false, marca: false, modelo: false, kilometraje: false, mecanico: false, trabajos_realizados_nombre: false, total_a_pagar: false } }}

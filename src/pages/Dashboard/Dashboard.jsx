@@ -8,9 +8,8 @@ import axios from 'axios';
 const Dashboard = () => {
 
   const url = import.meta.env.VITE_API_BASE_URL
-    const [ordenTrabajo, setOrdenTrabajo] = useState([])
-    const [ganancias, setGanancias] = useState([])
-    const [trabajosRealizados, setTrabajosRealizados] = useState([])
+
+    const [dataAdmin, setDataAdmin] = useState([])
 
     useEffect(() => {
         getDataAdmin('week')
@@ -33,9 +32,7 @@ const Dashboard = () => {
                 'Authorization': 'Bearer '+localStorage.getItem('token')
             }
         })
-        setOrdenTrabajo(response.data.ordenTrabajo)
-        setGanancias(response.data.ganancias)
-        setTrabajosRealizados(response.data.trabajosRealizados)
+        setDataAdmin(response.data.workOrders)
     }
 
   return <div className={css.container}>
@@ -58,15 +55,15 @@ const Dashboard = () => {
           <div className={css.cards}>
             {
               <>
-                <div className={css.ordenTrabajo}>
+                <div className={css.dataAdmin}>
                   <div className={css.cardHead}>
                     <span>Ordenes de trabajo</span>
                     {/* <span>+{card.change}</span> */}
                   </div>
 
-                  <div className={css.ordenTrabajo}>
+                  <div className={css.dataAdmin}>
                     <span>#</span>
-                    <span>{groupNumber(ordenTrabajo.length)}</span>
+                    <span>{groupNumber(dataAdmin.length)}</span>
                   </div>
                 </div>
 
@@ -78,7 +75,7 @@ const Dashboard = () => {
 
                   <div className={css.ganacias}>
                     <span>$</span>
-                    <span>{groupNumber((ordenTrabajo.reduce((a,v) =>  a = a + v.total_a_pagar , 0 )))}</span>
+                    <span>{groupNumber((dataAdmin.reduce((a,v) =>  a = a + v.total_a_pagar , 0 )))}</span>
                   </div>
                 </div>
 
@@ -90,7 +87,7 @@ const Dashboard = () => {
 
                   <div className={css.productos}>
                     <span></span>
-                    <span>{groupNumber((ordenTrabajo.reduce((a,v) =>  a = a + v.trabajos_counts , 0 )))} trabajos</span>
+                    <span>{groupNumber((dataAdmin.reduce((a,v) =>  a = a + v.trabajos_counts , 0 )))} trabajos</span>
                   </div>
                 </div>
               </>

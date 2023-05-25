@@ -7,15 +7,15 @@ import axios from 'axios'
 
 const Statistics = () => {
 
-    const [lastTrabajosRealizados, setLastTrabajosRealizados] = useState([])
+    const [lastWorksCompleted, setLastWorksCompleted] = useState([])
     const [loading, setLoading] = useState(true)
     const url = import.meta.env.VITE_API_BASE_URL
     useEffect(() => {
-        getLastTrabajosRealizados()
+        getLastWorksCompleted()
     }, [])
 
-    const getLastTrabajosRealizados = async () => {
-        const response = await axios.get(url + 'api/getLastTrabajosRealizados', {
+    const getLastWorksCompleted = async () => {
+        const response = await axios.get(url + 'api/getLastWorksCompleted', {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -23,7 +23,7 @@ const Statistics = () => {
             }
         })
 
-        setLastTrabajosRealizados(response.data)
+        setLastWorksCompleted(response.data)
         setLoading(false)
     }
 
@@ -39,7 +39,7 @@ const Statistics = () => {
                     </div>
 
                     <div className={css.card}>
-                        <span>Número de OT</span><span>#{lastTrabajosRealizados.uuid}</span>
+                        <span>Número de OT</span><span>#{lastWorksCompleted.uuid}</span>
                     </div>
                 </div>
 
@@ -47,8 +47,8 @@ const Statistics = () => {
                     <span>Trabajos</span>
                     {
                         loading ? <span>Cargando...</span> :
-                        lastTrabajosRealizados.trabajos_realizados.map((trabajo, index) => (
-                            <span key={index}>{trabajo.nombre_trabajo}</span>
+                        lastWorksCompleted.trabajos_realizados.map((trabajo, index) => (
+                            <span key={index}>{trabajo.trabajo}</span>
                         ))
                     }
                 </div>
@@ -57,7 +57,7 @@ const Statistics = () => {
                 <span>Total OT</span>
                     {
                         loading ? <span>Cargando...</span> :
-                        <span>${groupNumber(lastTrabajosRealizados.total_a_pagar)}</span>
+                        <span>${groupNumber(lastWorksCompleted.total_a_pagar)}</span>
                     }
                     
                 </div>

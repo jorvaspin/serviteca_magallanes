@@ -19,7 +19,7 @@ function Login() {
 
     // funcion para validar la sesion
     const validateSession = async () => {
-        localStorage.getItem('token') ? navigate('/dashboard') : console.log('no hay token')
+        localStorage.getItem('token') ? navigate('/login') : console.log('no hay token')
     }
 
   // funcion para crear la orden de trabajo desde el formulario
