@@ -1,29 +1,25 @@
-import moment from "moment/moment";
-import "moment/locale/es";
-import css from "./Layout.module.css";
-import { BiSearch } from "react-icons/bi";
-import Sidebar from "../Sidebar/Sidebar";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import moment from 'moment/moment'
+import 'moment/locale/es'
+import css from './Layout.module.css'
+import Sidebar from '../Sidebar/Sidebar'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 const Layout = () => {
-
   const { pathname } = useLocation()
-  moment.locale("es");
+  moment.locale('es')
 
   return (
     <div className={css.container}>
       <Sidebar />
 
-
       {/* making the dashboard as the default route */}
-      {pathname === "/" && <Navigate to="/login" />}
-
+      {pathname === '/' && <Navigate to='/login' />}
 
       <div className={css.dashboard}>
         <div className={css.topBaseGradients}>
-          <div className="gradient-red"></div>
-          <div className="gradient-orange"></div>
-          <div className="gradient-blue"></div>
+          <div className='gradient-red' />
+          <div className='gradient-orange' />
+          <div className='gradient-blue' />
         </div>
 
         {/* <div className={css.header}>
@@ -42,16 +38,14 @@ const Layout = () => {
             </div>
           </div>
 
-
         </div> */}
-
 
         <div className={css.content}>
           <Outlet />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

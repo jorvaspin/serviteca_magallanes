@@ -1,57 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import Orders from '../../components/Orders/Orders';
-import Statistics from '../../components/Statistics/Statistics';
-import { cardsData, groupNumber } from '../../data';
-import css from './Dashboard.module.css';
-import axios from 'axios';
+/* eslint-disable no-undef */
+/* eslint-disable no-return-assign */
+import React, { useEffect, useState } from 'react'
+import Orders from '../../components/Orders/Orders'
+import Statistics from '../../components/Statistics/Statistics'
+import { groupNumber } from '../../data'
+import css from './Dashboard.module.css'
+import axios from 'axios'
 
 const Dashboard = () => {
-
   const url = import.meta.env.VITE_API_BASE_URL
 
-    const [dataAdmin, setDataAdmin] = useState([])
+  const [dataAdmin, setDataAdmin] = useState([])
 
-    useEffect(() => {
-        getDataAdmin('week')
-    }, [])
+  useEffect(() => {
+    getDataAdmin('week')
+  }, [])
 
-    const [selected, setSelected] = useState('week');
+  const [selected, setSelected] = useState('week')
 
-    const handleChange = event => {
-      console.log(event.target.value);
-      getDataAdmin(event.target.value)
-      setSelected(event.target.value);
-    };
+  const handleChange = event => {
+    console.log(event.target.value)
+    getDataAdmin(event.target.value)
+    setSelected(event.target.value)
+  }
 
-    const getDataAdmin = async (data) => {
-      console.log(localStorage.getItem('token'))
-        const response = await axios.get(url + 'api/getDataAdmin/'+data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer '+localStorage.getItem('token')
-            }
-        })
-        setDataAdmin(response.data.workOrders)
-    }
+  const getDataAdmin = async (data) => {
+    console.log(localStorage.getItem('token'))
+    const response = await axios.get(url + 'api/getDataAdmin/' + data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    setDataAdmin(response.data.workOrders)
+  }
 
-  return <div className={css.container}>
+  return (
+    <div className={css.container}>
 
-    {/* left side */}
-    <div className={css.dashboard}>
-      
-      <div className={`${css.dashboardHead} theme-container`}>
-        <div className={css.head}>
-          <span>Administrador</span>
+      {/* left side */}
+      <div className={css.dashboard}>
 
-          <div className={css.durationButton}>
-            <select value={selected} onChange={handleChange}>
-              <option value="week">Esta Semana</option>
-              <option value="month">Este Mes</option>
-              <option value="year">Este Año</option>
-            </select>
+        <div className={`${css.dashboardHead} theme-container`}>
+          <div className={css.head}>
+            <span>Administrador</span>
+
+            <div className={css.durationButton}>
+              <select value={selected} onChange={handleChange}>
+                <option value='week'>Esta Semana</option>
+                <option value='month'>Este Mes</option>
+                <option value='year'>Este Año</option>
+              </select>
+            </div>
           </div>
-        </div>
           <div className={css.cards}>
             {
               <>
@@ -75,7 +77,7 @@ const Dashboard = () => {
 
                   <div className={css.ganacias}>
                     <span>$</span>
-                    <span>{groupNumber((dataAdmin.reduce((a,v) =>  a = a + v.total_a_pagar , 0 )))}</span>
+                    <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
                   </div>
                 </div>
 
@@ -86,24 +88,22 @@ const Dashboard = () => {
                   </div>
 
                   <div className={css.productos}>
-                    <span></span>
-                    <span>{groupNumber((dataAdmin.reduce((a,v) =>  a = a + v.trabajos_counts , 0 )))} trabajos</span>
+                    <span />
+                    <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.trabajos_counts, 0)))} trabajos</span>
                   </div>
                 </div>
               </>
             }
           </div>
+        </div>
+
+        <Statistics />
+
       </div>
 
-
-
-      <Statistics/>
-
+      <Orders />
     </div>
-
-
-      <Orders/>
-  </div>
+  )
 }
 
 export default Dashboard

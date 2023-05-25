@@ -8,71 +8,72 @@ import useCalendar from '../../store/Calendar'
 import { createEventId } from '../../data'
 
 const Calendar = () => {
+  const { currentEvents, setCurrentEvents } = useCalendar()
 
-    const { currentEvents, setCurrentEvents } = useCalendar()
+  const handleEvents = async (events) => {
+    await Promise.resolve(setCurrentEvents(events))
+  }
 
-    const handleEvents = async (events) => {
-        await Promise.resolve(setCurrentEvents(events))
+  const handleDateSelect = (selectInfo) => {
+    // eslint-disable-next-line no-undef
+    const title = prompt('Ingrese un nuevo evento')
+    const calendarApi = selectInfo.view.calendar
+
+    calendarApi.unselect()
+
+    if (title) {
+      calendarApi.addEvent({
+        id: createEventId(),
+        title,
+        start: selectInfo.start,
+        end: selectInfo.end,
+        allDay: selectInfo.allDay
+      })
     }
+  }
 
-    const handleDateSelect = (selectInfo) => {
-        let title = prompt('Ingrese un nuevo evento')
-        let calendarApi = selectInfo.view.calendar;
+  const handleEventClick = (clickInfo) => {
+    if (
+      // eslint-disable-next-line no-undef
+      confirm('Seguro que desea eliminar el evento ' + clickInfo.event.title + '?')
 
-        calendarApi.unselect();
-
-
-        if (title) {
-            calendarApi.addEvent({
-                id: createEventId(),
-                title,
-                start: selectInfo.start,
-                end: selectInfo.end,
-                allDay: selectInfo.allDay
-            })
-        }
+    ) {
+      clickInfo.event.remove()
     }
+  }
 
-    const handleEventClick = (clickInfo) => {
-        if (
-            confirm('Seguro que desea eliminar el evento ' + clickInfo.event.title + '?')
+  return (
+    <div className='calendar-container'>
 
-        ) {
-            clickInfo.event.remove()
-        }
-    }
+      <div>
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+          headerToolbar={{
 
-    return (
-        <div className="calendar-container">
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
 
-            <div>
-                <FullCalendar
-                    plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-                    headerToolbar={{
+          }}
 
-                        left: 'prev,next today',
-                        center: "title",
-                        right: "dayGridMonth,timeGridWeek,timeGridDay"
-
-                    }}
-
-                    allDaySlot={false}
-                    initialView="timeGridWeek"
-                    slotDuration={"01:00:00"}
-                    editable={true}
-                    selectable={true}
-                    selectMirror={true}
-                    dayMaxEvents={true}
-                    weekends={true}
-                    nowIndicator={true}
-                    initialEvents={currentEvents}
-                    eventsSet={handleEvents}
-                    select={handleDateSelect}
-                    eventClick={handleEventClick}
-                />
-            </div>
-        </div>
-    )
+          // eslint-disable-next-line react/jsx-props-no-multi-spaces
+          allDaySlot={false}
+          initialView='timeGridWeek'
+          slotDuration='01:00:00'
+          editable
+          selectable
+          selectMirror
+          dayMaxEvents
+          weekends
+          nowIndicator
+          initialEvents={currentEvents}
+          eventsSet={handleEvents}
+          select={handleDateSelect}
+          eventClick={handleEventClick}
+        />
+      </div>
+    </div>
+  )
 }
 
 export default Calendar
