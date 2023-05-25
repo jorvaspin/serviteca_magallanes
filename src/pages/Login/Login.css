@@ -1,0 +1,85 @@
+.main-login {
+    text-align: center;
+    justify-content: center;
+    display: flex; 
+    padding-top: 90px;
+    padding-bottom: 90px;
+    background-color: rgb(20 22 25 / 73%);
+  }
+  .sub-main-login {
+    display: flex;
+    justify-content: center;
+    height: 550px;
+    width: 35%;
+    box-shadow: 2px 5px 5px 5px rgb(207, 207, 207);
+    padding-top: 30px;
+    border-radius: 60px; 
+    background-color: white;
+  }
+  .imgs-login {
+      padding-top: 20px;
+      justify-content: center;
+      display: flex;
+    }
+  .container-image-login {
+    background-color: rgb(223, 221, 221); 
+    border-radius: 150px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 115px;
+    width: 115px;
+  }
+  .profile-login {
+    height: 100px;
+    width: 100px;
+    border-radius: 130px;
+  } 
+
+.input-form input{
+      width: 300px;
+      height: 50px;
+      border-radius: 60px;
+      box-shadow: inset 0px 0px 25px 0px #888;
+      border: none;
+      outline: none;
+      background-color: #fff;
+  }
+
+  .input-form .email-login{
+      height: 25px;
+      width: 25px;
+      position: absolute;
+      margin: 12px;
+      padding:3px;
+  }
+
+  .input-form .name-login{
+      padding-left: 70px;
+      font-size: 20px;
+  }
+  .second-input-login{
+      padding-top: 20px;
+  }
+
+  .input-form button{
+      width: 380px;
+      height: 50px;
+      border-radius: 60px;
+      background-color: #b103fc;
+      color: white;
+      font-size: 25px;
+      border: none;
+  }
+  .login-button{
+      padding-top: 25px;
+  }
+
+  .link-login{
+      font-size: 25px;
+      font-weight: 400;
+  }
+   
+  .link-login a{
+       color: blue;
+   }

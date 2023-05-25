@@ -16,7 +16,7 @@ const Layout = () => {
 
 
       {/* making the dashboard as the default route */}
-      {pathname === "/" && <Navigate to="/dashboard" />}
+      {pathname === "/" && <Navigate to="/login" />}
 
 
       <div className={css.dashboard}>

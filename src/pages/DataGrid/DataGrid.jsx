@@ -28,7 +28,7 @@ const DataGrid = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer '+import.meta.env.VITE_API_TOKEN    
+                'Authorization': 'Bearer '+localStorage.getItem('token')  
             }
         })
         setOrdenTrabajo(response.data)
@@ -121,7 +121,7 @@ const DataGrid = () => {
 
     
     return (
-        <div className="table-container">
+        <div className="table-container mt-5">
             <ThemeProvider theme={theme}>
                 <MaterialReactTable 
                     columns={columns} 
