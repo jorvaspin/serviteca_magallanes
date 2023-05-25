@@ -43,10 +43,6 @@ const DataGrid = () => {
             header: 'Código',
         },
         {
-            accessorKey: "fecha_recepcion",
-            header: 'Fecha Recepción',
-        },
-        {
             accessorKey: "patente",
             header: 'Patente',
         },
@@ -77,6 +73,10 @@ const DataGrid = () => {
         {
             accessorKey: "total_a_pagar",
             header: "Total a Pagar",
+        },
+        {
+            accessorKey: "fecha_recepcion",
+            header: 'Fecha Recepción',
         },
         {
             accessorKey: "trabajos_realizados_nombre",
@@ -128,7 +128,7 @@ const DataGrid = () => {
                     data={ordenTrabajo}
                     enableRowActions
                     editingMode="modal" //default
-                    initialState={{ columnVisibility: { id: false, marca: false, modelo: false, kilometraje: false, mecanico: false, trabajos_realizados_nombre: false, fecha_recepcion: false } }}
+                    initialState={{ columnVisibility: { id: false, marca: false, modelo: false, kilometraje: false, mecanico: false, trabajos_realizados_nombre: false, total_a_pagar: false } }}
                     enableColumnOrdering
                     enableEditing
                     onEditingRowSave={handleSaveRowEdits}

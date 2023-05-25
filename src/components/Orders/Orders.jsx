@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { groupNumber, ordersData } from '../../data'
-import OrdersPieChart from '../OrdersPieChart/OrdersPieChart'
 import css from './Orders.module.css'
+import Badge from 'react-bootstrap/Badge';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
 import axios from 'axios'
 
 const Orders = () => {
@@ -75,22 +78,27 @@ const Orders = () => {
                     ordenTrabajo.length > 0 ?
                     ordenTrabajo.map((order, index) => (
                         <div key={index} className={css.order}>
-                            <div>
+                            <div className='m-0'>
                                 <span>#Orden de trabajo {order.uuid}</span>
-                                <span>${groupNumber(order.total_a_pagar)}</span>
+                                <Badge className='text-white p-1 m-1' bg="success">
+                                ${groupNumber(order.total_a_pagar)}
+                                </Badge>
                             </div>
+                            <Stack direction="row" spacing={1}>
+                                <Chip className='text-white pl-0' label={order.fecha_creada} />
+                            </Stack>
                             <div>
                                 <span>{order.type}</span>
-                                <HtmlTooltip
+                                <HtmlTooltip className='w-25'
                                     title={
                                     <React.Fragment>
-                                        <Typography color="inherit">Detalle</Typography>
+                                        <Typography color="inherit" className='text-center p-2'>Detalle</Typography>
                                         {
                                             
                                             order.trabajos_realizados.map((trabajo, index) => (
                                                 <ul key={index}>
-                                                    <li>{trabajo['nombre_trabajo']}</li>
-                                                    <li>{trabajo['precio']}</li>
+                                                    <li className='text-black'>{trabajo['nombre_trabajo']}</li>
+                                                    <li className='text-black'>Valor: ${groupNumber(trabajo['precio'])} </li>
                                                     <hr />
                                                 </ul>
                                             ))
@@ -98,10 +106,14 @@ const Orders = () => {
                                     </React.Fragment>
                                     }
                                 >
-                                    <span>Trabajos realizados: {order.trabajos_realizados.length}</span>
+                                    <Badge bg="warning" text="dark">
+                                        Trabajos realizados: <span className='text-black'>{order.trabajos_realizados.length}</span>
+                                    </Badge>
                                 </HtmlTooltip>
                             </div>
+                            <hr className='mt-3  mb-0' />
                         </div>
+
                     ))
                     :
                         <div key='0'>

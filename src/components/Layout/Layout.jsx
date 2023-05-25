@@ -26,13 +26,12 @@ const Layout = () => {
           <div className="gradient-blue"></div>
         </div>
 
-        <div className={css.header}>
+        {/* <div className={css.header}>
 
           <span>{moment().format("dddd, Do MMMM YYYY")}</span>
 
-          <div className={css.searchBar}>
-            <BiSearch size={20} />
-            <input type="text" placeholder="Buscar" />
+          <div className={css}>
+            <img src="./logo.png" alt="logo" width={100} />
           </div>
 
           <div className={css.profile}>
@@ -44,7 +43,7 @@ const Layout = () => {
           </div>
 
 
-        </div>
+        </div> */}
 
 
         <div className={css.content}>
