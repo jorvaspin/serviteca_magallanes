@@ -36,6 +36,7 @@ const Orders = () => {
       toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
         position: toast.POSITION.TOP_RIGHT
       })
+
       console.log(error)
       // eslint-disable-next-line no-undef
       localStorage.clear()
