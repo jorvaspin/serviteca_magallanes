@@ -6,10 +6,13 @@ import Statistics from '../../components/Statistics/Statistics'
 import { groupNumber } from '../../data'
 import css from './Dashboard.module.css'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
   const url = import.meta.env.VITE_API_BASE_URL
-
+  // importamos navigate para redireccionar
+  const navigate = useNavigate()
   const [dataAdmin, setDataAdmin] = useState([])
 
   useEffect(() => {
@@ -26,14 +29,23 @@ const Dashboard = () => {
 
   const getDataAdmin = async (data) => {
     console.log(localStorage.getItem('token'))
-    const response = await axios.get(url + 'api/getDataAdmin/' + data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    setDataAdmin(response.data.workOrders)
+    try {
+      const response = await axios.get(url + 'api/getDataAdmin/' + data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      setDataAdmin(response.data.workOrders)
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      localStorage.clear()
+      navigate('/login')
+    }
   }
 
   return (

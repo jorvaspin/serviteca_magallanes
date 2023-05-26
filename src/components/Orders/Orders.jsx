@@ -7,27 +7,40 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
-
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Orders = () => {
   const url = import.meta.env.VITE_API_BASE_URL
   const [workOrders, setWorkOrders] = useState([])
+  // importamos navigate para redireccionar
+  const navigate = useNavigate()
 
   useEffect(() => {
     getWorksToday()
   }, [])
 
   const getWorksToday = async () => {
-    const response = await axios.get(url + 'api/getWorksToday', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        // eslint-disable-next-line no-undef
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    setWorkOrders(response.data)
+    try {
+      const response = await axios.get(url + 'api/getWorksToday', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          // eslint-disable-next-line no-undef
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      setWorkOrders(response.data)
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      // eslint-disable-next-line no-undef
+      localStorage.clear()
+      navigate('/login')
+    }
   }
 
   const HtmlTooltip = styled(({ className, ...props }) => (

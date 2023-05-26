@@ -5,26 +5,39 @@ import { BsArrowUpShort } from 'react-icons/bs'
 import { groupNumber } from '../../data'
 import StatisticsChart from '../StatisticsChart/StatisticsChart'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Statistics = () => {
   const [lastWorksCompleted, setLastWorksCompleted] = useState([])
   const [loading, setLoading] = useState(true)
   const url = import.meta.env.VITE_API_BASE_URL
+  // importamos navigate para redireccionar
+  const navigate = useNavigate()
+
   useEffect(() => {
     getLastWorksCompleted()
   }, [])
 
   const getLastWorksCompleted = async () => {
-    const response = await axios.get(url + 'api/getLastWorksCompleted', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
+    try {
+      const response = await axios.get(url + 'api/getLastWorksCompleted', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
 
-    setLastWorksCompleted(response.data)
-    setLoading(false)
+      setLastWorksCompleted(response.data)
+      setLoading(false)
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      localStorage.clear()
+      navigate('/login')
+    }
   }
 
   return (

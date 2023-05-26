@@ -8,7 +8,8 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
+import Loading from 'react-fullscreen-loading'
 
 export function CreateNewOT () {
   // importamos navigate para redireccionar
@@ -19,50 +20,72 @@ export function CreateNewOT () {
   useEffect(() => {
     getOrderId()
   }, [])
-  // funcion para crear la orden de trabajo desde el formulario
-  const onSubmit = async (data) => {
-    console.log(data)
-    const response = await axios.post(url + 'api/createWorkOrder', { data }, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    console.log(response.data)
+
+  function getToast () {
     toast.success('Orden de trabajo creada correctamente.', {
       position: toast.POSITION.TOP_RIGHT
     })
-    navigate('/ordenes')
   }
+  // funcion para crear la orden de trabajo desde el formulario
+  const onSubmit = async (data) => {
+    console.log(data)
+    try {
+      setLoading(true)
+      const response = await axios.post(url + 'api/createWorkOrder', { data }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      setLoading(false)
+      console.log(response.data)
+      getToast()
+      navigate('/ordenes')
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      localStorage.clear()
+      navigate('/login')
+    }
+  }
+
   // funcion para obtener la ultima uuid de la orden de trabajo
   const getOrderId = async () => {
-    const response = await axios.get(url + 'api/getOrderId', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    setUuid(response.data)
+    try {
+      const response = await axios.get(url + 'api/getOrderId', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      setUuid(response.data)
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      localStorage.clear()
+      navigate('/login')
+    }
   }
 
   // inicializamos los estados
-  const id = useState(0)
-  // eslint-disable-next-line camelcase
-  const codigo_ot = useState(0)
+  const [id] = useState(0)
+  const [codigo_ot] = useState(0)
   const [uuid, setUuid] = useState(0)
-  const patente = useState('')
-  const marca = useState('')
-  const modelo = useState('')
-  const kilometraje = useState()
-  // eslint-disable-next-line camelcase
-  const nombre_cliente = useState('')
-  const mecanico = useState('')
-  // eslint-disable-next-line camelcase
-  const forma_pago = useState('')
-  // eslint-disable-next-line camelcase
+  const [patente] = useState('')
+  const [marca] = useState('')
+  const [modelo] = useState('')
+  const [kilometraje] = useState()
+  const [nombre_cliente] = useState('')
+  const [mecanico] = useState('seleccione')
+  const [forma_pago] = useState('seleccione')
   const [total_a_pagar, setTotal_a_pagar] = useState()
+  const [loading, setLoading] = useState(false)
 
   // funcion para obtener el total a pagar
   function getTotal (cartValues) {
@@ -93,7 +116,6 @@ export function CreateNewOT () {
       name: 'trabajos'
     })
     setTotal_a_pagar(getTotal(cartValues))
-    return <p className='text-black'>{getTotal(cartValues)}</p>
   }
 
   // inicializamos el useForm
@@ -105,18 +127,14 @@ export function CreateNewOT () {
   } = useForm({
     defaultValues: {
       id,
-      // eslint-disable-next-line camelcase
       codigo_ot,
       patente,
       marca,
       modelo,
       kilometraje,
-      // eslint-disable-next-line camelcase
       nombre_cliente,
       mecanico,
-      // eslint-disable-next-line camelcase
       forma_pago,
-      // eslint-disable-next-line camelcase
       total_a_pagar,
       trabajos: [{ trabajo: '', costo: null }]
     }
@@ -133,7 +151,9 @@ export function CreateNewOT () {
 
   return (
     <main className='form-new-ot'>
-      <ToastContainer />
+      {
+        loading ? <Loading loading background='#0000008c' loaderColor='#fff' /> : null
+      }
       <Form className='row' onSubmit={handleSubmit(onSubmit)}>
         <div className='p-1 mb-4 text-center'>
           <h2 className='mb-3'>Información Orden Trabajo</h2>
@@ -192,7 +212,7 @@ export function CreateNewOT () {
         <Form.Group className='col-4 mb-3' controlId='formBasicMecanico'>
           <Form.Label>Mécanico</Form.Label>
           <Form.Select {...register('mecanico')}>
-            <option selected>Seleccione mecanico</option>
+            <option value='seleccione'>Seleccione mecanico</option>
             <option value='Pedro'>Pedro</option>
             <option value='Jonhy'>Jonhy</option>
             <option value='Jorbe'>Jorbe</option>
@@ -203,7 +223,7 @@ export function CreateNewOT () {
         <Form.Group className='col-4 mb-3' controlId='formBasicFormaPago'>
           <Form.Label>Forma de pago</Form.Label>
           <Form.Select {...register('forma_pago')}>
-            <option selected>Seleccione forma de pago</option>
+            <option value='seleccione'>Seleccione forma de pago</option>
             <option value='Debito/Credito'>Debito/Credito</option>
             <option value='transferencia'>Transferencia</option>
             <option value='efectivo'>Efectivo</option>

@@ -3,7 +3,7 @@ import React, { useMemo, useEffect, useState, useCallback } from 'react'
 import MaterialReactTable from 'material-react-table'
 import './DataGrid.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Link } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import {
   Box,
   IconButton,
@@ -11,27 +11,38 @@ import {
 } from '@mui/material'
 import { Edit, Print } from '@mui/icons-material'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const DataGrid = () => {
   const url = import.meta.env.VITE_API_BASE_URL
   const [workOrders, setWorkOrders] = useState([])
-
-  const setCreateModalOpen = useState(false)
-  const setValidationErrors = useState({})
+  // const setValidationErrors = useState({})
 
   useEffect(() => {
     getWorkOrders()
   }, [])
 
+  // importamos navigate para redireccionar
+  const navigate = useNavigate()
+
   const getWorkOrders = async () => {
-    const response = await axios.get(url + 'api/getWorkOrders', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    setWorkOrders(response.data)
+    try {
+      const response = await axios.get(url + 'api/getWorkOrders', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      setWorkOrders(response.data)
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      localStorage.clear()
+      navigate('/login')
+    }
   }
   const columns = useMemo(() => [
     {
@@ -92,13 +103,11 @@ const DataGrid = () => {
   )
 
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-    // if (!Object.keys(validationErrors).length) {
-
-    // }
+    exitEditingMode()
   }
 
-  const handleCancelRowEdits = () => {
-    setValidationErrors({})
+  const handleCancelRowEdits = async ({ exitEditingMode, row, values }) => {
+    exitEditingMode()
   }
 
   const handleDeleteRow = useCallback(
@@ -108,7 +117,10 @@ const DataGrid = () => {
   )
 
   return (
-    <div className='table-container mt-5'>
+
+    <div className='table-container mt-2'>
+
+      <Outlet />
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}
@@ -136,10 +148,9 @@ const DataGrid = () => {
           )}
           renderTopToolbarCustomActions={() => (
             <Link
-              to='/createOT'
+              to='createOT'
               className='btn btn-primary'
               color='success'
-              onClick={() => setCreateModalOpen(true)}
               variant='contained'
             >
               Crear nuevo Orden de trabajo

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import './Login.css'
 import email from '../../../public/email.jpeg'
 import pass from '../../../public/pass.png'
+import { toast } from 'react-toastify'
 
 function Login () {
   // inicializamos con el getOrderId
@@ -25,16 +26,23 @@ function Login () {
   // funcion para crear la orden de trabajo desde el formulario
   const onSubmit = async (data) => {
     console.log(data)
-    const response = await axios.post(url + 'api/login', { email: data.email, password: data.password }, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
-    console.log(response.data.data)
-    localStorage.setItem('token', response.data.data.token)
-
-    navigate('/dashboard')
+    try {
+      const response = await axios.post(url + 'api/login', { email: data.email, password: data.password }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
+      })
+      console.log(response.data.data)
+      localStorage.setItem('token', response.data.data.token)
+    } catch (error) {
+      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      console.log(error)
+      localStorage.clear()
+      navigate('/login')
+    }
   }
 
   // inicializamos el useForm
