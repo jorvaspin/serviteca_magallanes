@@ -2,7 +2,6 @@ import ReactECharts from 'echarts-for-react'
 import * as echarts from 'echarts'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
 const StatisticsChart = () => {
@@ -30,10 +29,6 @@ const StatisticsChart = () => {
       setLastWeekData(response.data.total_array.reverse())
       console.log(response.data)
     } catch (error) {
-      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
-        position: toast.POSITION.TOP_RIGHT
-      })
-      console.log(error)
       // eslint-disable-next-line no-undef
       localStorage.clear()
       navigate('/login')
@@ -54,7 +49,7 @@ const StatisticsChart = () => {
       axisPointer: {
         type: 'cross'
       },
-      backgroundColor: 'rgba(0, 0, 0, 0.59)',
+      backgroundColor: '#fff',
       borderWidth: 0
     },
     grid: {

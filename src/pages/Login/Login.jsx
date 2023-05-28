@@ -33,13 +33,17 @@ function Login () {
           Accept: 'application/json'
         }
       })
-      console.log(response.data.data)
-      localStorage.setItem('token', response.data.data.token)
-    } catch (error) {
-      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
+      toast.success('Sesión iniciada correctamente.', {
         position: toast.POSITION.TOP_RIGHT
       })
-      console.log(error)
+
+      // una vez iniciado limpiamos el registro del formulario
+      register('email', '')
+      register('password', '')
+
+      localStorage.setItem('token', response.data.data.token)
+      navigate('/dashboard')
+    } catch (error) {
       localStorage.clear()
       navigate('/login')
     }
@@ -55,15 +59,12 @@ function Login () {
     <div className='main-login'>
       <div className='sub-main-login'>
         <div>
-          <div className='imgs-login'>
+          <div className='imgs-login mb-4'>
             <div className='container-image-login'>
               <img src='./logo.png' alt='profile' className='profile-login' />
-
             </div>
-
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h1>Login Page</h1>
             <div className='input-form'>
               <img src={email} alt='email' className='email-login' />
               <input type='text' {...register('email')} placeholder='Ingrese su email' className='name-login' />

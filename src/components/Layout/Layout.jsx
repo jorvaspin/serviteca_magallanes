@@ -16,11 +16,6 @@ const Layout = () => {
       {pathname === '/' && <Navigate to='/login' />}
 
       <div className={css.dashboard}>
-        <div className={css.topBaseGradients}>
-          <div className='gradient-red' />
-          <div className='gradient-orange' />
-          <div className='gradient-blue' />
-        </div>
 
         {/* <div className={css.header}>
 

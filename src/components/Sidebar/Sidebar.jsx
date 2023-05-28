@@ -8,45 +8,39 @@ const Sidebar = () => {
     <div className={css.container}>
 
       <img src='https://res.cloudinary.com/dr3zgzxx0/image/upload/v1684513017/logo_magallanes_bvqpva.png' alt='logo' className={css.logo} />
+      {/* escondemos los menu si el token es invalido */}
 
-      <div className={css.menu}>
-        <NavLink to='dashboard' className={css.item} title='Dashboard'>
-          <MdSpaceDashboard size={30} />
-        </NavLink>
+      {
+        // eslint-disable-next-line no-undef
+        localStorage.getItem('token')
+          ? (
+            <div className={css.menu}>
+              <NavLink to='dashboard' className={css.item} title='Dashboard'>
+                <MdSpaceDashboard size={30} />
+                <p>Dashboard</p>
+              </NavLink>
 
-        <NavLink
-          to='ordenes'
-          className={css.item}
-          title='Ordenes de trabajo'
-        >
-          <AiOutlineTable size={30} />
-        </NavLink>
+              <NavLink
+                to='ordenes'
+                className={css.item}
+                title='Ordenes de trabajo'
+              >
+                <AiOutlineTable size={30} />
+                <p>Ordenes de trabajo</p>
+              </NavLink>
 
-        <NavLink
-          to='productos'
-          className={css.item}
-          title='Productos'
-        >
-          <GiCarWheel size={30} />
-        </NavLink>
-
-        {/* <NavLink
-          to='calendar'
-          className={css.item}
-          title='Calendar'
-        >
-          <AiFillCalendar size={30} />
-        </NavLink> */}
-
-        {/* <NavLink
-                    to="board"
-                    className={css.item}
-                    title="Trello Board"
-                >
-                    <FaTasks size={30} />
-                </NavLink> */}
-
-      </div>
+              <NavLink
+                to='productos'
+                className={css.item}
+                title='Productos'
+              >
+                <GiCarWheel size={30} />
+                <p>Productos</p>
+              </NavLink>
+            </div>
+            )
+          : null
+      }
     </div>
   )
 }

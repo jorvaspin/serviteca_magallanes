@@ -8,6 +8,8 @@ import css from './Dashboard.module.css'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
 
 const Dashboard = () => {
   const url = import.meta.env.VITE_API_BASE_URL
@@ -67,45 +69,41 @@ const Dashboard = () => {
             </div>
           </div>
           <div className={css.cards}>
-            {
-              <>
-                <div className={css.dataAdmin}>
-                  <div className={css.cardHead}>
-                    <span>Ordenes de trabajo</span>
-                    {/* <span>+{card.change}</span> */}
-                  </div>
+            <>
+              <div className={css.dataAdmin}>
+                <div className={css.cardHead}>
+                  <span>Ordenes de trabajo</span>
+                </div>
 
-                  <div className={css.dataAdmin}>
-                    <span>#</span>
-                    <span>{groupNumber(dataAdmin.length)}</span>
-                  </div>
+                <div className={css.dataAdmin}>
+                  <Stack direction='row' spacing={1}>
+                    <Chip color='warning' className='text-white pl-0 font-bold' label={groupNumber(dataAdmin.length)} />
+                  </Stack>
+                </div>
+              </div>
+
+              <div className={css.ganacias}>
+                <div className={css.cardHead}>
+                  <span>Ganancias</span>
                 </div>
 
                 <div className={css.ganacias}>
-                  <div className={css.cardHead}>
-                    <span>Ganancias</span>
-                    {/* <span>+{card.change}</span> */}
-                  </div>
+                  <span>$</span>
+                  <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
+                </div>
+              </div>
 
-                  <div className={css.ganacias}>
-                    <span>$</span>
-                    <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
-                  </div>
+              <div className={css.productos}>
+                <div className={css.cardHead}>
+                  <span>Trabajos Realizados</span>
                 </div>
 
                 <div className={css.productos}>
-                  <div className={css.cardHead}>
-                    <span>Trabajos Realizados</span>
-                    {/* <span>+{card.change}</span> */}
-                  </div>
-
-                  <div className={css.productos}>
-                    <span />
-                    <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.trabajos_counts, 0)))} trabajos</span>
-                  </div>
+                  <span />
+                  <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.trabajos_counts, 0)))} trabajos</span>
                 </div>
-              </>
-            }
+              </div>
+            </>
           </div>
         </div>
 

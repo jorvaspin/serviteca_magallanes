@@ -64,10 +64,6 @@ export function CreateNewOT () {
       })
       setUuid(response.data)
     } catch (error) {
-      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
-        position: toast.POSITION.TOP_RIGHT
-      })
-      console.log(error)
       localStorage.clear()
       navigate('/login')
     }

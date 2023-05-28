@@ -31,10 +31,6 @@ const Statistics = () => {
       setLastWorksCompleted(response.data)
       setLoading(false)
     } catch (error) {
-      toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
-        position: toast.POSITION.TOP_RIGHT
-      })
-      console.log(error)
       localStorage.clear()
       navigate('/login')
     }
@@ -58,13 +54,15 @@ const Statistics = () => {
 
         <div className={css.card}>
           <span>Trabajos</span>
-          {
+          <ul>
+            {
                         loading
                           ? <span>Cargando...</span>
                           : lastWorksCompleted.trabajos_realizados.map((trabajo, index) => (
-                            <span key={index}>{trabajo.trabajo}</span>
+                            <li key={index}>{trabajo.trabajo}</li>
                           ))
                     }
+          </ul>
         </div>
 
         <div className={css.card}>

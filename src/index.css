@@ -20,16 +20,15 @@ body {
   box-sizing: border-box;
 }
 #dashboard {
-  /* height: 100vh; */
+  background:rgb(237 236 236);
   width: 100vw;
-  background-color: var(--black);
-  color: white;
+  color: #4a4545;
   font-family: "Public Sans", sans-serif;
   overflow: hidden;
 }
 
 .theme-container {
-  background: rgba(0, 0, 0, 0.59);
+  background: #e8e8e8;
   border-radius: 20px;
   padding: 2rem;
 }
@@ -57,13 +56,13 @@ body {
 }
 
 .grey-container {
-  border-top: 0.3px solid rgba(255, 255, 255, 0.185);
-  border-bottom: 0.3px solid rgba(255, 255, 255, 0.185);
+  border-top: 0.3px solid rgba(33, 0, 246, 0.185);
+  border-bottom: 0.3px solid rgba(32, 21, 255, 0.185);
   background: linear-gradient(
     90deg,
-    rgba(53, 53, 53, 0) 1.21%,
-    rgba(53, 53, 53, 0.46) 49.45%,
-    rgba(53, 53, 53, 0) 103.83%
+    rgba(119, 179, 225, 0) 1.21%,
+    rgba(119, 179, 225, 0.46) 49.45%,
+    rgba(119, 179, 225, 0) 103.83%
   );
   padding: 1.5rem 1rem;
 }

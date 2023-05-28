@@ -13,6 +13,10 @@
 .head > img {
   width: 2rem;
 }
+.head > span{
+    font-size: 0.9rem;
+    font-weight: 900;
+}
 .stat {
   padding: 0.5rem;
   display: flex;
@@ -23,25 +27,27 @@
 }
 .stat > :nth-child(1) {
   font-size: 0.8rem;
+  color: #4a4545;
 }
 .stat > :nth-child(2) {
   font-size: 1.2rem;
   font-weight: 500;
-  color: white;
+  color: #4a4545;
 }
 
 .orders {
   display: flex;
   flex-direction: column;
   width: 100%;
- gap: 1.5rem;
+  gap: 1.5rem;
 }
 .order>div{
     display: flex;
     width: 100%;
     justify-content: space-between;
-    color: var(--grey);
-    font-size: 0.85rem;
+    color: rgb(52 75 130);
+    font-weight: 900;
+    font-size: 0.8rem;
 }
 
 .order>:nth-child(1)
