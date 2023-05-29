@@ -3,4 +3,4 @@ Proyecto para la creación de OT y Stock en bodega vía Barcode. Reportería dig
 
 Imagenes
 
-<img align="center" src="https://res.cloudinary.com/dr3zgzxx0/image/upload/v1685347616/Captura_de_Pantalla_2023-05-29_a_la_s_04.00.08_s4yxks.png" alt="jorge-ignacio-v%c3%a1squez-pinto-991481116/" height="500" width="750" />
+<img align="center" src="https://res.cloudinary.com/dr3zgzxx0/image/upload/v1685347616/Captura_de_Pantalla_2023-05-29_a_la_s_04.00.08_s4yxks.png" alt="jorge-ignacio-v%c3%a1squez-pinto-991481116/" height="420" width="800" />
