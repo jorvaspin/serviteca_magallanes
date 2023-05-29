@@ -31,6 +31,7 @@
     "react-fullscreen-loading": "^0.0.4",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.8.1",
+    "react-to-print": "^2.14.12",
     "rodal": "^2.0.1",
     "zustand": "^4.3.3"
   },

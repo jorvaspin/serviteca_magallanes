@@ -15,8 +15,6 @@
     max-width: 5rem;
 }
 
-
-
 .menu{
     margin-top: 4rem;
     display: flex;
@@ -33,10 +31,22 @@
     color: #52514e !important;
     text-decoration: none;
     text-align: center;
+    padding: 7px;
 }
+
+.menu a:hover, a:focus, a.active{
+    background-color: steelblue !important;
+    color: white !important;
+}
+
+
 
 .iconscenter{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.title-sidebar{
+    display: flex;
 }

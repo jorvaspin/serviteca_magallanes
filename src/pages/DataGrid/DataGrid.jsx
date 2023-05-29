@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useMemo, useEffect, useState, useCallback } from 'react'
+import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import MaterialReactTable from 'material-react-table'
 import './DataGrid.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -12,11 +12,16 @@ import {
 import { Edit, Print } from '@mui/icons-material'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useReactToPrint } from 'react-to-print'
+import { WrapperComponent } from './Print/ConsumerToPrint'
 
 const DataGrid = () => {
   const url = import.meta.env.VITE_API_BASE_URL
   const [workOrders, setWorkOrders] = useState([])
+  const [printRow, setPrintRow] = useState([])
+  const [ladingData, setLadingData] = useState(false)
   // const setValidationErrors = useState({})
+  const componentRef = useRef()
 
   useEffect(() => {
     getWorkOrders()
@@ -39,7 +44,6 @@ const DataGrid = () => {
       toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
         position: toast.POSITION.TOP_RIGHT
       })
-      console.log(error)
       localStorage.clear()
       navigate('/login')
     }
@@ -70,7 +74,7 @@ const DataGrid = () => {
       header: 'Kilometraje'
     },
     {
-      accessorKey: 'nombre_cliente', // normal accessorKey
+      accessorKey: 'nombre_cliente',
       header: 'Nombre Cliente'
     },
     {
@@ -110,23 +114,39 @@ const DataGrid = () => {
     exitEditingMode()
   }
 
-  const handleDeleteRow = useCallback(
-    (row) => {
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current
+  })
 
+  const handlePrintRow = useCallback(
+    (row) => {
+      setLadingData(true)
+      setPrintRow(row.original)
+      handlePrint(row)
+
+      console.log(row)
     }
   )
 
   return (
-
     <div className='table-container mt-2'>
-
       <Outlet />
+      {
+        ladingData
+          ? (
+            <div style={{ display: 'none' }}>
+              <WrapperComponent ref={componentRef} print={printRow} />
+            </div>
+            )
+          : null
+
+      }
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}
           data={workOrders}
           enableRowActions
-          editingMode='modal' // default
+          editingMode='modal'
           initialState={{ columnVisibility: { id: false, marca: false, modelo: false, kilometraje: false, mecanico: false, trabajos_realizados_nombre: false, total_a_pagar: false } }}
           enableColumnOrdering
           enableEditing
@@ -140,7 +160,7 @@ const DataGrid = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip arrow placement='right' title='Imprimir'>
-                <IconButton onClick={() => handleDeleteRow(row)}>
+                <IconButton onClick={() => handlePrintRow(row)}>
                   <Print />
                 </IconButton>
               </Tooltip>
