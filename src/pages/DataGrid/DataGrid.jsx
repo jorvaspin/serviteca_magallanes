@@ -9,7 +9,8 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material'
-import { Edit, Print } from '@mui/icons-material'
+import { Print } from '@mui/icons-material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useReactToPrint } from 'react-to-print'
@@ -78,7 +79,7 @@ const DataGrid = () => {
       header: 'Nombre Cliente'
     },
     {
-      accessorKey: 'mecanico',
+      accessorKey: 'mecanico_nombre',
       header: 'Mécanico'
     },
     {
@@ -92,6 +93,10 @@ const DataGrid = () => {
     {
       accessorKey: 'fecha_recepcion',
       header: 'Fecha Recepción'
+    },
+    {
+      accessorKey: 'taller_nombre',
+      header: 'Taller Trabajo'
     },
     {
       accessorKey: 'trabajos_realizados_nombre',
@@ -147,16 +152,16 @@ const DataGrid = () => {
           data={workOrders}
           enableRowActions
           editingMode='modal'
-          initialState={{ columnVisibility: { id: false, marca: false, modelo: false, kilometraje: false, mecanico: false, trabajos_realizados_nombre: false, total_a_pagar: false } }}
+          initialState={{ columnVisibility: { id: false, marca: false, modelo: false, kilometraje: false, mecanico_nombre: false, taller_nombre: false, trabajos_realizados_nombre: false, total_a_pagar: false } }}
           enableColumnOrdering
           enableEditing
           onEditingRowSave={handleSaveRowEdits}
           onEditingRowCancel={handleCancelRowEdits}
           renderRowActions={({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '1rem' }}>
-              <Tooltip arrow placement='left' title='Editar'>
+              <Tooltip arrow placement='left' title='Ver'>
                 <IconButton onClick={() => table.setEditingRow(row)}>
-                  <Edit />
+                  <VisibilityIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip arrow placement='right' title='Imprimir'>

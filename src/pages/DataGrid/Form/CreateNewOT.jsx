@@ -62,7 +62,9 @@ export function CreateNewOT () {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       })
-      setUuid(response.data)
+      setUuid(response.data.workOrderId)
+      setMechanic(response.data.mechanic)
+      setWorkshop(response.data.workshop)
     } catch (error) {
       localStorage.clear()
       navigate('/login')
@@ -82,6 +84,10 @@ export function CreateNewOT () {
   const [forma_pago] = useState('seleccione')
   const [total_a_pagar, setTotal_a_pagar] = useState()
   const [loading, setLoading] = useState(false)
+
+  // treamos la data de mecanicos y workshops
+  const [mechanic, setMechanic] = useState([])
+  const [workshop, setWorkshop] = useState([])
 
   // funcion para obtener el total a pagar
   function getTotal (cartValues) {
@@ -209,9 +215,28 @@ export function CreateNewOT () {
           <Form.Label>Mécanico</Form.Label>
           <Form.Select {...register('mecanico')}>
             <option value='seleccione'>Seleccione mecanico</option>
-            <option value='Pedro'>Pedro</option>
-            <option value='Jonhy'>Jonhy</option>
-            <option value='Jorbe'>Jorbe</option>
+
+            {
+              mechanic.map((mecha) => (
+                <option key={mecha.id} value={mecha.id}>{mecha.name}</option>
+              ))
+            }
+
+          </Form.Select>
+          <Form.Text className='text-muted' />
+        </Form.Group>
+
+        <Form.Group className='col-4 mb-3' controlId='formBasicMecanico'>
+          <Form.Label>Taller</Form.Label>
+          <Form.Select {...register('taller')}>
+            <option value='seleccione'>Seleccione el taller</option>
+
+            {
+              workshop.map((work) => (
+                <option key={work.id} value={work.id}>{work.name}</option>
+              ))
+            }
+
           </Form.Select>
           <Form.Text className='text-muted' />
         </Form.Group>

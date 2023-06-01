@@ -6,6 +6,7 @@ import { groupNumber } from '../../data'
 import StatisticsChart from '../StatisticsChart/StatisticsChart'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import Skeleton from '@mui/material/Skeleton'
 
 const Statistics = () => {
   const [lastWorksCompleted, setLastWorksCompleted] = useState([])
@@ -20,6 +21,7 @@ const Statistics = () => {
 
   const getLastWorksCompleted = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(url + 'api/getLastWorksCompleted', {
         headers: {
           'Content-Type': 'application/json',
@@ -27,17 +29,25 @@ const Statistics = () => {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       })
-
       setLastWorksCompleted(response.data)
       setLoading(false)
     } catch (error) {
       localStorage.clear()
+      setLoading(false)
       navigate('/login')
     }
   }
 
   return (
     <div className={`${css.container} theme-container`}>
+      <span className={css.title}>Ventas últimos 7 días</span>
+      {
+        loading
+          ? <Skeleton animation='wave' width={100} />
+          : <StatisticsChart />
+      }
+
+      <br />
       <span className={css.title}>Últimos trabajos realizados</span>
 
       <div className={`${css.cards} grey-container`}>
@@ -48,7 +58,13 @@ const Statistics = () => {
           </div>
 
           <div className={css.card}>
-            <span>Número de OT</span><span>#{lastWorksCompleted.uuid}</span>
+            <span>Número de OT</span>
+            {
+                      loading
+                        ? <Skeleton animation='wave' width={100} />
+                        : <span>#{lastWorksCompleted.uuid}</span>
+                    }
+
           </div>
         </div>
 
@@ -57,7 +73,7 @@ const Statistics = () => {
           <ul>
             {
                         loading
-                          ? <span>Cargando...</span>
+                          ? <Skeleton animation='wave' width={100} />
                           : lastWorksCompleted.trabajos_realizados.map((trabajo, index) => (
                             <li key={index}>{trabajo.trabajo}</li>
                           ))
@@ -69,14 +85,13 @@ const Statistics = () => {
           <span>Total OT</span>
           {
                         loading
-                          ? <span>Cargando...</span>
+                          ? <Skeleton animation='wave' width={100} />
                           : <span>${groupNumber(lastWorksCompleted.total_a_pagar)}</span>
                     }
 
         </div>
       </div>
 
-      <StatisticsChart />
     </div>
   )
 }

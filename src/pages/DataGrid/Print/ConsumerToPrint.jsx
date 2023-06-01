@@ -274,7 +274,7 @@ export class ConsumerToPrint extends React.PureComponent {
                       <tbody>
                         <tr>
                           <td>
-                            Avenida Santa Rosa 6791, La Granja, Santiago, Chile
+                            Avenida Santa Rosa 6794, La Granja, Santiago, Chile
                           </td>
                         </tr>
                         <tr>

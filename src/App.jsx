@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 import Login from './pages/Login/Login'
-import Productos from './pages/Calendar/Calendar'
+import Calendario from './pages/Calendar/Calendar'
 import Dashboard from './pages/Dashboard/Dashboard'
 import DataGrid from './pages/DataGrid/DataGrid'
 import { CreateNewOT } from './pages/DataGrid/Form/CreateNewOT'
@@ -17,7 +17,7 @@ const App = () => {
           <Route path='/' element={<Layout />}>
             <Route path='login' element={<Login />} />
             <Route path='dashboard' element={<Dashboard />} />
-            <Route path='productos' element={<Productos />} />
+            <Route path='calendario' element={<Calendario />} />
             <Route path='createOT' element={<CreateNewOT />} />
             <Route path='ordenes'>
               <Route index element={<DataGrid />} />

@@ -19,7 +19,10 @@
     margin-top: 4rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0rem;
+    width: 100%;
+    text-align: center;
+    justify-content: center;    
 }
 
 .item>svg{
@@ -31,11 +34,22 @@
     color: #52514e !important;
     text-decoration: none;
     text-align: center;
-    padding: 7px;
+    padding: 22px 0px 0px 0px;
+    height: 100px;
 }
 
-.menu a:hover, a:focus, a.active{
+.menu>a:nth-child(2){
+    padding: 15px 0px 0px 0px;
+    line-height: 1;
+}
+
+.menu a[class="active"] {
     background-color: steelblue !important;
+    color: white !important;
+}
+
+.menu a:hover, a:focus{
+    background-color: rgb(224, 172, 27) !important;
     color: white !important;
 }
 
@@ -47,6 +61,8 @@
     align-items: center;
 }
 
-.title-sidebar{
-    display: flex;
+.menu a span{
+    display: block;
+    width: 100%;
+    text-align: center;
 }

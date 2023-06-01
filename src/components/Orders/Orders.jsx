@@ -13,6 +13,7 @@ import axios from 'axios'
 const Orders = () => {
   const url = import.meta.env.VITE_API_BASE_URL
   const [workOrders, setWorkOrders] = useState([])
+  const [mechanics, setMechanics] = useState([])
   // importamos navigate para redireccionar
   const navigate = useNavigate()
 
@@ -30,7 +31,8 @@ const Orders = () => {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       })
-      setWorkOrders(response.data)
+      setWorkOrders(response.data.worksToday)
+      setMechanics(response.data.mechanics)
     } catch (error) {
       // eslint-disable-next-line no-undef
       localStorage.clear()
@@ -60,15 +62,16 @@ const Orders = () => {
       <div className={`grey-container ${css.stat}`}>
         <span>Total</span>
         {
-                    workOrders.length > 0
-                      // eslint-disable-next-line no-return-assign
-                      ? <span>$ {groupNumber((workOrders.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
-                      : <span>$ {groupNumber(0)}</span>
-                }
+            workOrders.length > 0
+              // eslint-disable-next-line no-return-assign
+              ? <span>$ {groupNumber((workOrders.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
+              : <span>$ {groupNumber(0)}</span>
+        }
 
       </div>
 
       <div className={css.orders}>
+        <span className={{ fontWeight: 'bold' }}>Últimas 3 OT´s generadas</span>
         {
           workOrders.length > 0
             ? workOrders.map((order, index) => (
@@ -113,6 +116,47 @@ const Orders = () => {
             ))
             : <div key='0'><div className='text-center'><h6>Aún no se realizan trabajos el día de hoy</h6></div></div>
         }
+      </div>
+
+      <div className={css.orders} />
+      {/* listamos los mecanicos con su nombre y su teléfono */}
+      <div className={css.mechanics}>
+        {/* {
+          mechanics.map((mechanic, index) => (
+            <div key={index} className={css.mechanic}>
+              <span>{mechanic.name}</span>
+              <span>{mechanic.phone}</span>
+            </div>
+          ))
+        } */}
+        <div class='container bootstrap snippets bootdey'>
+          <div class='header'>
+            <h3 class='text-muted prj-name'>
+              <span class='fa fa-users fa-2x' />
+              Mecánicos
+            </h3>
+          </div>
+
+          <div class='jumbotron'>
+            <ul class='list-group'>
+              {
+          mechanics.map((mechanic, index) => (
+            <li class='list-group-item user-item text-left' key={index}>
+              <img class='img-circle img-user  img-thumbnail mb-2' src='https://cdn-icons-png.flaticon.com/512/320/320348.png' width={40} />
+              <strong>
+                <br />{mechanic.name} <br />
+              </strong>
+              <span>
+                Teléfono: {mechanic.phone}<br />
+              </span>
+            </li>
+          ))
+        }
+
+            </ul>
+          </div>
+
+        </div>
       </div>
     </div>
   )

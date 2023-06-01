@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 import css from './Sidebar.module.css'
 import { MdSpaceDashboard } from 'react-icons/md'
 import { AiOutlineTable } from 'react-icons/ai'
@@ -6,16 +6,7 @@ import { GiCarWheel } from 'react-icons/gi'
 import { NavLink } from 'react-router-dom'
 const Sidebar = () => {
   // variable para acivar el menu
-  const [active, setActive] = useState('dashboard')
-  // activamos el menu
-  const activate = (isActive, path, activeStyle, nonActiveStyle) => {
-    console.log(active)
-    if (isActive) {
-      setActive(path)
-      return activeStyle
-    }
-    return nonActiveStyle
-  }
+  // const [active, setActive] = useState('dashboard')
 
   return (
     <div className={css.container}>
@@ -30,32 +21,30 @@ const Sidebar = () => {
             <div className={css.menu}>
               <NavLink
                 to='dashboard'
-                className={css.item}
                 title='Dashboard'
-                style={(activeNav) => activate(activeNav.isActive, 'dashboard')}
+                // style={(activeNav) => activate(activeNav.isActive, 'dashboard')}
               >
                 <MdSpaceDashboard size={30} />
-                <span className='title-sidebar'>Dashboard</span>
+                <span className='title-sidebar mt-2'>Dashboard</span>
               </NavLink>
 
               <NavLink
                 to='ordenes'
-                className={css.item}
                 title='Ordenes de trabajo'
-                style={(activeNav) => activate(activeNav.isActive, 'ordenes')}
+                // style={(activeNav) => activate(activeNav.isActive, 'ordenes')}
               >
-                <AiOutlineTable size={30} />
-                <span className='title-sidebar'>Ordenes de trabajo</span>
+                <GiCarWheel size={30} />
+
+                <span className='title-sidebar mt-2'>Lista OT´s</span>
               </NavLink>
 
               <NavLink
-                to='productos'
-                className={css.item}
-                title='Productos'
-                style={(activeNav) => activate(activeNav.isActive, 'productos')}
+                to='calendario'
+                title='calendario'
+                // style={(activeNav) => activate(activeNav.isActive, 'productos')}
               >
-                <GiCarWheel size={30} />
-                <span className='title-sidebar'>Productos</span>
+                <AiOutlineTable size={30} />
+                <span className='title-sidebar mt-2'>Calendario</span>
               </NavLink>
             </div>
             )

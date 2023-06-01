@@ -1,0 +1,7 @@
+.btn_workshops{
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    display: flex;
+    gap: 1rem;
+}

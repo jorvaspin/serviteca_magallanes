@@ -31,6 +31,7 @@ body {
   background: #e8e8e8;
   border-radius: 20px;
   padding: 2rem;
+  position: relative;
 }
 
 .gradient-red {

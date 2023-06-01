@@ -3,10 +3,22 @@ import * as echarts from 'echarts'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import './StatisticsChart.css'
+import Loading from 'react-fullscreen-loading'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 const StatisticsChart = () => {
   const [lastWeekData, setLastWeekData] = useState([])
   const [lastWeekDays, setLastWeekDays] = useState([])
+  // estado para el loading
+  const [loading, setLoading] = useState(false)
+  const [alignment, setAlignment] = useState('center')
+
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment)
+  }
+
   const url = import.meta.env.VITE_API_BASE_URL
   // importamos navigate para redireccionar
   const navigate = useNavigate()
@@ -15,9 +27,10 @@ const StatisticsChart = () => {
     getLastWeekData()
   }, [])
 
-  const getLastWeekData = async () => {
+  const getLastWeekData = async (taller = 0) => {
     try {
-      const response = await axios.get(url + 'api/getLastWeekData', {
+      setLoading(true)
+      const response = await axios.get(url + 'api/getLastWeekData/' + taller, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -27,7 +40,7 @@ const StatisticsChart = () => {
       })
       setLastWeekDays(response.data.date_array.reverse())
       setLastWeekData(response.data.total_array.reverse())
-      console.log(response.data)
+      setLoading(false)
     } catch (error) {
       // eslint-disable-next-line no-undef
       localStorage.clear()
@@ -115,7 +128,34 @@ const StatisticsChart = () => {
   }
 
   return (
-    <ReactECharts option={option} />
+    <div className='relative'>
+      {
+        loading ? <Loading loading background='#0000008c' loaderColor='#fff' /> : null
+      }
+      <div className='btn_workshops'>
+        {/* creamos 2 botones para cada taller */}
+        <ToggleButtonGroup
+          value={alignment}
+          exclusive
+          onChange={handleAlignment}
+          aria-label='text alignment'
+        >
+          <ToggleButton value='left' onClick={() => { getLastWeekData(1) }} style={{ fontWeight: 'bold', padding: '0px 10px 0px 10px', fontSize: '10px', height: '35px' }} className='btn btn-primary' aria-label='left aligned'>
+            Taller Santa Rosa
+          </ToggleButton>
+          <ToggleButton value='center' onClick={() => { getLastWeekData(0) }} style={{ fontWeight: 'bold', padding: '0px 10px 0px 10px', fontSize: '10px', height: '35px' }} className='btn btn-primary' aria-label='left aligned'>
+            Ambos
+          </ToggleButton>
+          <ToggleButton value='rigth' onClick={() => { getLastWeekData(2) }} style={{ fontWeight: 'bold', padding: '0px 10px 0px 10px', fontSize: '10px', height: '35px' }} aria-label='centered'>
+            Taller Tocornal
+          </ToggleButton>
+        </ToggleButtonGroup>
+        {/* <button className='btn btn-primary' style={{ fontSize: '12px' }} onClick={() => { getLastWeekData(1) }}>Taller Santa Rosa</button>
+        <button className='btn btn-primary' style={{ fontSize: '12px' }} onClick={() => { getLastWeekData(2) }}>Taller Tocornal</button> */}
+      </div>
+      <ReactECharts option={option} />
+    </div>
+
   )
 }
 

@@ -10,12 +10,14 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
+import Skeleton from '@mui/material/Skeleton'
 
 const Dashboard = () => {
   const url = import.meta.env.VITE_API_BASE_URL
   // importamos navigate para redireccionar
   const navigate = useNavigate()
   const [dataAdmin, setDataAdmin] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getDataAdmin('week')
@@ -30,8 +32,8 @@ const Dashboard = () => {
   }
 
   const getDataAdmin = async (data) => {
-    console.log(localStorage.getItem('token'))
     try {
+      setLoading(true)
       const response = await axios.get(url + 'api/getDataAdmin/' + data, {
         headers: {
           'Content-Type': 'application/json',
@@ -40,10 +42,12 @@ const Dashboard = () => {
         }
       })
       setDataAdmin(response.data.workOrders)
+      setLoading(false)
     } catch (error) {
       toast.warning('La sesión se ha cerrado, inicie sesión nuevamente.', {
         position: toast.POSITION.TOP_RIGHT
       })
+      setLoading(false)
       console.log(error)
       localStorage.clear()
       navigate('/login')
@@ -77,7 +81,11 @@ const Dashboard = () => {
 
                 <div className={css.dataAdmin}>
                   <Stack direction='row' spacing={1}>
-                    <Chip color='warning' className='text-white pl-0 font-bold' label={groupNumber(dataAdmin.length)} />
+                    {
+                      loading
+                        ? <Skeleton animation='wave' width={50} />
+                        : <Chip color='warning' className='text-white pl-0 font-bold' label={groupNumber(dataAdmin.length)} />
+                    }
                   </Stack>
                 </div>
               </div>
@@ -88,8 +96,11 @@ const Dashboard = () => {
                 </div>
 
                 <div className={css.ganacias}>
-                  <span>$</span>
-                  <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
+                  {
+                      loading
+                        ? <Skeleton animation='wave' width={100} />
+                        : <span>${groupNumber((dataAdmin.reduce((a, v) => a = a + v.total_a_pagar, 0)))}</span>
+                    }
                 </div>
               </div>
 
@@ -100,7 +111,11 @@ const Dashboard = () => {
 
                 <div className={css.productos}>
                   <span />
-                  <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.trabajos_counts, 0)))} trabajos</span>
+                  {
+                      loading
+                        ? <Skeleton animation='wave' width={100} />
+                        : <span>{groupNumber((dataAdmin.reduce((a, v) => a = a + v.trabajos_counts, 0)))} trabajos</span>
+                    }
                 </div>
               </div>
             </>

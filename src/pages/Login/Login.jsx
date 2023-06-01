@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -7,6 +7,7 @@ import './Login.css'
 import email from '../../../public/email.jpeg'
 import pass from '../../../public/pass.png'
 import { toast } from 'react-toastify'
+import Loading from 'react-fullscreen-loading'
 
 function Login () {
   // inicializamos con el getOrderId
@@ -18,6 +19,9 @@ function Login () {
   // importamos la url base de la api
   const url = import.meta.env.VITE_API_BASE_URL
 
+  // estado para el loading
+  const [loading, setLoading] = useState(false)
+
   // funcion para validar la sesion
   const validateSession = async () => {
     localStorage.getItem('token') ? navigate('/dashboard') : console.log('no hay token')
@@ -26,6 +30,7 @@ function Login () {
   // funcion para crear la orden de trabajo desde el formulario
   const onSubmit = async (data) => {
     console.log(data)
+    setLoading(true)
     try {
       const response = await axios.post(url + 'api/login', { email: data.email, password: data.password }, {
         headers: {
@@ -36,7 +41,7 @@ function Login () {
       toast.success('Sesión iniciada correctamente.', {
         position: toast.POSITION.TOP_RIGHT
       })
-
+      setLoading(false)
       // una vez iniciado limpiamos el registro del formulario
       register('email', '')
       register('password', '')
@@ -44,6 +49,7 @@ function Login () {
       localStorage.setItem('token', response.data.data.token)
       navigate('/dashboard')
     } catch (error) {
+      setLoading(false)
       localStorage.clear()
       navigate('/login')
     }
@@ -57,6 +63,9 @@ function Login () {
 
   return (
     <div className='main-login'>
+      {
+        loading ? <Loading loading background='#0000008c' loaderColor='#fff' /> : null
+      }
       <div className='sub-main-login'>
         <div>
           <div className='imgs-login mb-4'>

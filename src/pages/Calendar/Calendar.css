@@ -5,8 +5,15 @@
     max-width: 1100px;
 }
 .fc-event{
-    background: var(--orange-gradient)!important;
+    background: linear-gradient( 268.35deg, rgba(31, 28, 215, 0.99) 3.47%, rgba(59, 68, 238, 0.99) 60.18% );
+    color: white !important;
 }
+
+.fc-event:hover{
+    background: linear-gradient( 268.35deg, rgba(34, 32, 144, 0.99) 3.47%, rgba(32, 36, 122, 0.99) 60.18% );
+    color: white !important;
+}
+
 .fc .fc-timegrid-slot{
     height: 2.5rem!important;
 }
